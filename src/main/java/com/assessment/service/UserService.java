@@ -1,9 +1,12 @@
 package com.assessment.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.assessment.dto.UserResponse;
+import com.assessment.entity.User;
 import com.assessment.repository.UserRepository;
 
 @Service
@@ -22,4 +25,9 @@ public class UserService {
             userRepository.saveAll(response.getUsers());
         }
     }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+    
 }
