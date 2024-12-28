@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assessment.entity.User;
@@ -34,5 +35,10 @@ public class UserController {
     public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
         return ResponseEntity.ok(userService.getUsersByRole(role));
   
+    }
+
+    @GetMapping("/sorted")
+    public ResponseEntity<List<User>> getUsersSortedByAge(@RequestParam boolean ascending) {
+        return ResponseEntity.ok(userService.getUsersSortedByAge(ascending));
     }
 }

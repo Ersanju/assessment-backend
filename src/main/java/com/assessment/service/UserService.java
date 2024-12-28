@@ -3,6 +3,7 @@ package com.assessment.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.assessment.dto.UserResponse;
@@ -32,6 +33,11 @@ public class UserService {
     
     public List<User> getUsersByRole(String role) {
         return userRepository.findByRole(role);
+    }
+
+    public List<User> getUsersSortedByAge(boolean ascending) {
+        Sort sort = ascending ? Sort.by("age").ascending() : Sort.by("age").descending();
+        return userRepository.findAll(sort);
     }
     
 }
