@@ -40,4 +40,8 @@ public class UserService {
         return userRepository.findAll(sort);
     }
     
+    public User getUserByIdOrSsn(Long id, String ssn) {
+        return id != null ? userRepository.findById(id).orElse(null) 
+                          : userRepository.findBySsn(ssn).orElse(null);
+    }
 }

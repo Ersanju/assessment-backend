@@ -41,4 +41,15 @@ public class UserController {
     public ResponseEntity<List<User>> getUsersSortedByAge(@RequestParam boolean ascending) {
         return ResponseEntity.ok(userService.getUsersSortedByAge(ascending));
     }
+
+    @GetMapping("/user/{idOrSsn}")
+    public ResponseEntity<User> getUserByIdOrSsn(@PathVariable String idOrSsn) {
+        try {
+            Long id = Long.parseLong(idOrSsn);
+            return ResponseEntity.ok(userService.getUserByIdOrSsn(id, null));
+        } catch (NumberFormatException e) {
+            return ResponseEntity.ok(userService.getUserByIdOrSsn(null, idOrSsn));
+        }
+    }
+
 }
