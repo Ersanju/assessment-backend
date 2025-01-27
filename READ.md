@@ -35,3 +35,7 @@ JDBC URL     - jdbc:h2:mem:assessment
 User Name    - root
 
 Password     - root
+
+### Swagger/OpenAI integration for API documentation
+
+Open URL - http://localhost:9999/swagger-ui/index.html
