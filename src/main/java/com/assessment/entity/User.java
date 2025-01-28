@@ -28,6 +28,7 @@ public class User {
     private String eyeColor;
     @Embedded
     private Hair hair;
+    private String ip;
     @Embedded
     @AttributeOverride(name = "address", column = @Column(name = "user_address"))
     @AttributeOverride(name = "city", column = @Column(name = "user_city"))
@@ -35,7 +36,9 @@ public class User {
     @AttributeOverride(name = "state", column = @Column(name = "user_state"))
     @AttributeOverride(name = "coordinates.lat", column = @Column(name = "user_lat"))
     @AttributeOverride(name = "coordinates.lng", column = @Column(name = "user_lng"))
+    @AttributeOverride(name = "country", column = @Column(name = "user_country"))
     private Address address;
+    private String macAddress;
     private String university;
     @Embedded
     private Bank bank;
@@ -70,6 +73,8 @@ public class User {
         private String postalCode;
         @Column(name = "user_state", insertable=false, updatable=false)
         private String state;
+        @Column(name = "user_country", insertable=false, updatable=false)
+        private String country;
     }
 
     @Getter
