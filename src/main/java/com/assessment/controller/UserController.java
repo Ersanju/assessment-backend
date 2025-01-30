@@ -63,7 +63,7 @@ public class UserController {
             Long id = Long.parseLong(idOrSsn);
             return ResponseEntity.ok(userService.getUserByIdOrSsn(id, null));
         } catch (NumberFormatException e) {
-            logger.info(idOrSsn + "is not a number, trying to get user by SSN");
+            logger.info(idOrSsn + " is not a number, trying to get user by SSN");
             return ResponseEntity.ok(userService.getUserByIdOrSsn(null, idOrSsn));
         }
     }

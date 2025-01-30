@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.assessment.dto.UserResponse;
 import com.assessment.entity.User;
+import com.assessment.exception.UserNotFoundException;
 import com.assessment.repository.UserRepository;
+
 
 @Service
 public class UserService {
@@ -33,7 +35,8 @@ public class UserService {
                 logger.warn("No users found in the response");
             }
         } catch(Exception e) {
-            logger.error("Error occurred while loading users data: {}", e.getMessage(), e);   
+            logger.error("Error occurred while loading users data: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to fetch user from external API");
         }
     }
 
@@ -44,7 +47,11 @@ public class UserService {
     
     public List<User> getUsersByRole(String role) {
         logger.debug("Fetching users by role {}", role);
-        return userRepository.findByRole(role);
+        List<User> users = userRepository.findByRole(role);
+        if(users.isEmpty()){
+            throw new UserNotFoundException("No user found for the role: " + role);
+        }
+        return users;
     }
 
     public List<User> getUsersSortedByAge(boolean ascending) {
@@ -55,7 +62,7 @@ public class UserService {
     
     public User getUserByIdOrSsn(Long id, String ssn) {
         logger.debug("Fetching user by ID or SSN");
-        return id != null ? userRepository.findById(id).orElse(null) 
-                          : userRepository.findBySsn(ssn).orElse(null);
+        return id != null ? userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User not found with Id: " + id)) 
+                          : userRepository.findBySsn(ssn).orElseThrow(()-> new UserNotFoundException("User not found with Ssn: " + ssn));
     }
 }
