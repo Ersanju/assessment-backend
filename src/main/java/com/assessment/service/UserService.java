@@ -31,8 +31,6 @@ public class UserService {
             if (response != null) {
                 userRepository.saveAll(response.getUsers());
                 logger.info("Successfully saved {} users to database", response.getUsers().size());
-            } else {
-                logger.warn("No users found in the response");
             }
         } catch(Exception e) {
             logger.error("Error occurred while loading users data: {}", e.getMessage(), e);

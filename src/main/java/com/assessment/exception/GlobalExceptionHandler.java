@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
         logger.error("Unexpected error: {}", ex);
         Map<String, Object> response = new HashMap<>();
         response.put("error", "Internal server error");
-        response.put("message", "An unexpected error occurred. Please try again. ");
+        response.put("message", "An unexpected error occurred. Please try again.");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     

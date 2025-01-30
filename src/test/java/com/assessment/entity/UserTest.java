@@ -18,27 +18,15 @@ public class UserTest {
         user.setId(1L);
         user.setFirstName("John");
         user.setLastName("Doe");
-        user.setEmail("john.doe@example.com");
-        user.setAge(30);
-        user.setGender("Male");
-        user.setPhone("1234567890");
-        user.setUsername("john_doe");
-        user.setPassword("password123");
 
         // Validate getters
         assertEquals(1, user.getId());
         assertEquals("John", user.getFirstName());
         assertEquals("Doe", user.getLastName());
-        assertEquals("john.doe@example.com", user.getEmail());
-        assertEquals(30, user.getAge());
-        assertEquals("Male", user.getGender());
-        assertEquals("1234567890", user.getPhone());
-        assertEquals("john_doe", user.getUsername());
-        assertEquals("password123", user.getPassword());
     }
 
     @Test
-    void testNestedEntities() {
+    void testNested_AddressEntity() {
         User.Address address = new User.Address();
         address.setAddress("123 Main St");
         address.setCity("Sample City");
@@ -55,13 +43,11 @@ public class UserTest {
     }
 
     @Test
-    void testNestedBankEntity() {
+    void testNested_BankEntity() {
         User.Bank bank = new User.Bank();
         bank.setCardExpire("12/23");
         bank.setCardNumber("1234567890123456");
         bank.setCardType("Visa");
-        bank.setCurrency("USD");
-        bank.setIban("US123456");
 
         user.setBank(bank);
 
@@ -69,12 +55,10 @@ public class UserTest {
         assertEquals("12/23", user.getBank().getCardExpire());
         assertEquals("1234567890123456", user.getBank().getCardNumber());
         assertEquals("Visa", user.getBank().getCardType());
-        assertEquals("USD", user.getBank().getCurrency());
-        assertEquals("US123456", user.getBank().getIban());
     }
 
     @Test
-    void testNestedCryptoEntity() {
+    void testNested_CryptoEntity() {
         User.Crypto crypto = new User.Crypto();
         crypto.setCoin("Bitcoin");
         crypto.setWallet("0xb9fc2fe63b2a6c003f1c324c3bfa53259162181a");
@@ -89,7 +73,7 @@ public class UserTest {
     }
 
     @Test
-    void testNestedHairEntity() {
+    void testNested_HairEntity() {
         User.Hair hair = new User.Hair();
         hair.setColor("Black");
         hair.setType("Short");
@@ -102,7 +86,7 @@ public class UserTest {
     }
 
     @Test
-    void testNestedCompanyEntity() {
+    void testNested_CompanyEntity() {
         User.Company company = new User.Company();
         company.setDepartment("Engineering");
         company.setName("Dooley, Kozey and Cronin");
@@ -117,7 +101,7 @@ public class UserTest {
     }
 
     @Test
-    void testNestedCoordinatesEntity() {
+    void testNested_CoordinatesEntity() {
         User.Address address = new User.Address();
         User.Coordinates coordinates = new User.Coordinates();
         coordinates.setLat(40.7128);

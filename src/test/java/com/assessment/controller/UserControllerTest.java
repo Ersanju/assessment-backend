@@ -28,12 +28,32 @@ class UserControllerTest {
 
     private MockMvc mockMvc;
 
+    private User user1, user2;
+
     @BeforeEach
     void setUp() {
+        // Creating test users
+        user1 = new User();
+        user1.setId(1L);
+        user1.setFirstName("John");
+        user1.setLastName("Doe");
+        user1.setRole("admin");
+        user1.setAge(25);
+        user1.setSsn("804-492-390");
+
+        user2 = new User();
+        user2.setId(2L);
+        user2.setFirstName("Jane");
+        user2.setLastName("Smith");
+        user2.setRole("user");
+        user2.setAge(30);
+        user2.setSsn("904-293-839");
+
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
+    // Test Case 1: Load Users
     @Test
     void testLoadUsers() throws Exception {
         mockMvc.perform(get("/api/load-users"))
@@ -43,19 +63,10 @@ class UserControllerTest {
         verify(userService, times(1)).loadUsers();
     }
 
+    // Test Case 2: All users
     @Test
     void testGetAllUsers() throws Exception {
-        // Mock the service response
-        List<User> users = Arrays.asList(
-                new User() {{
-                    setId(1L);
-                    setFirstName("John");
-                }},
-                new User() {{
-                    setId(2L);
-                    setFirstName("Jane");
-                }}
-        );
+        List<User> users = Arrays.asList(user1, user2);
 
         when(userService.getAllUsers()).thenReturn(users);
 
@@ -70,43 +81,25 @@ class UserControllerTest {
         verify(userService, times(1)).getAllUsers();
     }
 
+    // Test Case 3: Users by role
     @Test
     void testGetUsersByRole() throws Exception {
-        // Mock the service response
-        List<User> users = Arrays.asList(
-                new User() {{
-                    setId(1L);
-                    setRole("Admin");
-                }},
-                new User() {{
-                    setId(2L);
-                    setRole("Admin");
-                }}
-        );
+        List<User> users = Arrays.asList(user1, user2);
 
-        when(userService.getUsersByRole("Admin")).thenReturn(users);
+        when(userService.getUsersByRole("admin")).thenReturn(users);
 
-        mockMvc.perform(get("/api/role/Admin"))
+        mockMvc.perform(get("/api/role/admin"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].role").value("Admin"));
+                .andExpect(jsonPath("$[0].role").value("admin"));
 
-        verify(userService, times(1)).getUsersByRole("Admin");
+        verify(userService, times(1)).getUsersByRole("admin");
     }
 
+    //Test Case 4: Sorted user by age
     @Test
     void testGetUsersSortedByAge() throws Exception {
-        // Mock the service response
-        List<User> users = Arrays.asList(
-                new User() {{
-                    setId(1L);
-                    setAge(25);
-                }},
-                new User() {{
-                    setId(2L);
-                    setAge(30);
-                }}
-        );
+        List<User> users = Arrays.asList(user1, user2);
 
         when(userService.getUsersSortedByAge(true)).thenReturn(users);
 
@@ -119,9 +112,9 @@ class UserControllerTest {
         verify(userService, times(1)).getUsersSortedByAge(true);
     }
 
+    //Test case 5: User by Id
     @Test
     void testGetUserByIdOrSsn_withId() throws Exception {
-        // Mock the service response for ID
         User user = new User();
         user.setId(1L);
         user.setFirstName("John");
@@ -136,20 +129,20 @@ class UserControllerTest {
         verify(userService, times(1)).getUserByIdOrSsn(1L, null);
     }
 
+    // Test case 6: User by Ssn
     @Test
     void testGetUserByIdOrSsn_withSsn() throws Exception {
-        // Mock the service response for SSN
         User user = new User();
-        user.setSsn("123-45-6789");
+        user.setSsn("804-492-390");
         user.setFirstName("Jane");
 
-        when(userService.getUserByIdOrSsn(null, "123-45-6789")).thenReturn(user);
+        when(userService.getUserByIdOrSsn(null, "804-492-390")).thenReturn(user);
 
-        mockMvc.perform(get("/api/user/123-45-6789"))
+        mockMvc.perform(get("/api/user/804-492-390"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.ssn").value("123-45-6789"))
+                .andExpect(jsonPath("$.ssn").value("804-492-390"))
                 .andExpect(jsonPath("$.firstName").value("Jane"));
 
-        verify(userService, times(1)).getUserByIdOrSsn(null, "123-45-6789");
+        verify(userService, times(1)).getUserByIdOrSsn(null, "804-492-390");
     }
 }
