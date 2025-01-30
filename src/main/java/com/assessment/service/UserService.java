@@ -22,7 +22,7 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public void loadUsers() {
-        logger.info("Loading users data into in-memory H2 database");
+        logger.debug("Loading users data into in-memory H2 database");
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://dummyjson.com/users";
 
@@ -47,6 +47,7 @@ public class UserService {
         logger.debug("Fetching users by role {}", role);
         List<User> users = userRepository.findByRole(role);
         if(users.isEmpty()){
+            logger.warn("No user found for the role: {}", role);
             throw new UserNotFoundException("No user found for the role: " + role);
         }
         return users;
@@ -60,7 +61,14 @@ public class UserService {
     
     public User getUserByIdOrSsn(Long id, String ssn) {
         logger.debug("Fetching user by ID or SSN");
-        return id != null ? userRepository.findById(id).orElseThrow(()-> new UserNotFoundException("User not found with Id: " + id)) 
-                          : userRepository.findBySsn(ssn).orElseThrow(()-> new UserNotFoundException("User not found with Ssn: " + ssn));
+        User user = id != null ? userRepository.findById(id).orElseThrow(() -> {
+            logger.warn("No user found with Id: {}", id);
+            return new UserNotFoundException("User not found with Id: " + id);
+        }) 
+        : userRepository.findBySsn(ssn).orElseThrow(() -> {
+            logger.warn("No user found with SSN: {}", ssn);
+            return new UserNotFoundException("User not found with Ssn: " + ssn);
+        });
+        return user;
     }
 }
