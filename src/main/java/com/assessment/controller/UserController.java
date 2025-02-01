@@ -26,10 +26,10 @@ public class UserController {
 
     @GetMapping("/load-users")
     @Operation(summary = "Load users data", description = "Load users data into in-memory H2 database")
-    public String loadUsers() {
+    public ResponseEntity<String> loadUsers() {
         logger.info("Request to load users data into in-memory H2 database");
         userService.loadUsers();
-        return "Users data loaded into in-memory H2 database successfully!";
+        return ResponseEntity.ok("Users data loaded into in-memory H2 database successfully!");
     }
 
     @GetMapping("/all-users")
@@ -59,8 +59,8 @@ public class UserController {
     public ResponseEntity<User> getUserByIdOrSsn(@PathVariable String idOrSsn) {
         logger.info("Request to get user by ID or SSN from in-memory H2 database");
         try {
-            logger.info(idOrSsn + " is a number, trying to get user by ID");
             Long id = Long.parseLong(idOrSsn);
+            logger.info(idOrSsn + " is a number, trying to get user by ID");
             return ResponseEntity.ok(userService.getUserByIdOrSsn(id, null));
         } catch (NumberFormatException e) {
             logger.info(idOrSsn + " is not a number, trying to get user by SSN");

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.assessment.dto.UserResponse;
@@ -62,11 +63,9 @@ public class UserService {
     public User getUserByIdOrSsn(Long id, String ssn) {
         logger.debug("Fetching user by ID or SSN");
         User user = id != null ? userRepository.findById(id).orElseThrow(() -> {
-            logger.warn("No user found with Id: {}", id);
             return new UserNotFoundException("User not found with Id: " + id);
         }) 
         : userRepository.findBySsn(ssn).orElseThrow(() -> {
-            logger.warn("No user found with SSN: {}", ssn);
             return new UserNotFoundException("User not found with Ssn: " + ssn);
         });
         return user;
